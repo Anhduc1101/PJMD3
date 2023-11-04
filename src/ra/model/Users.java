@@ -96,7 +96,7 @@ public class Users implements Serializable {
 
     @Override
     public String toString() {
-        String format = "      %-5s |  %-15s   |  %-20s  |  %-15s       |  %-20s   |  %-19s|  %-10s  |  %-15s   ";
+        String format = "        %-10s|  %-15s  |  %-15s  |  %-15s   |  %-20s   |  %-25s    |  %-10s   |  %-15s   ";
         return String.format(format, id, name, username, password, email, (status ? "\033[0;32mĐang hoạt động"+RESET : "\033[0;31mĐã bị khóa"+RESET), role, phone);
     }
 

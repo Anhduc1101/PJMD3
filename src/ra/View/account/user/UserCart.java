@@ -1,6 +1,7 @@
 package ra.View.account.user;
 
 import ra.config.Config;
+import ra.config.Utils;
 import ra.config.Validate;
 import ra.model.Cart;
 import ra.model.Product;
@@ -24,13 +25,16 @@ public class UserCart {
 
     public void menu() {
         do {
-            System.out.println("**********************MENU************************");
-            System.out.println("1. Hiển thị danh sách sản phẩm ");
-            System.out.println("2. Hiển thị giỏ hàng");
-            System.out.println("3. Thay đổi số lượng");
-            System.out.println("4. Xóa sản phẩm");
-            System.out.println("5. Thêm vào giỏ hàng");
-            System.out.println("0. Thoát");
+            System.out.println("\033[1;94m╔════════════ TRANG GIỎ HÀNG  ════════════╗");
+            System.out.println("\033[1;94m║"+RESET+"           "+ Utils.getCurrentDateTime() + " \033[1;94m          ║");
+            System.out.println("\033[1;94m║═════════════════════════════════════════║"+RESET);
+            System.out.println("\033[1;94m║          \033[1;97m1. Danh sách sản phẩm" + RESET + "\033[1;94m          ║");
+            System.out.println("\033[1;94m║          \033[1;97m2. Hiển thị giỏ hàng" + RESET + "\033[1;94m           ║");
+            System.out.println("\033[1;94m║          \033[1;97m3. Thay đổi số lượng" + RESET + "\033[1;94m           ║");
+            System.out.println("\033[1;94m║          \033[1;97m4. Xóa sản phẩm" + RESET + "\033[1;94m                ║");
+            System.out.println("\033[1;94m║          \033[1;97m5. Thêm vào giỏ hàng" + RESET + "\033[1;94m           ║");
+            System.out.println("\033[1;94m║          \033[1;97m0. Quay lại" + RESET + "\033[1;94m                    ║");
+            System.out.println("\033[1;94m╚═════════════════════════════════════════╝" + RESET);
             System.out.print("Mời lựa chọn (1/2/3/4/5/0): ");
             switch (Validate.validateInt()) {
                 case 1:

@@ -1,5 +1,7 @@
 package ra.View.account.admin;
 
+import com.sun.org.apache.regexp.internal.RE;
+import ra.config.Utils;
 import ra.config.Validate;
 import ra.model.Category;
 import ra.model.Product;
@@ -11,7 +13,7 @@ import ra.service.product.ProductServiceIMPL;
 import java.util.ArrayList;
 import java.util.List;
 
-import static ra.config.Color.RESET;
+import static ra.config.Color.*;
 
 public class ProductManagement {
     IProductService productService = new ProductServiceIMPL();
@@ -19,16 +21,16 @@ public class ProductManagement {
 
     public void menu() {
         do {
-            System.out.println("\033[1;94m╔══════════════════════ QUẢN LÝ SẢN PHẨM ═══════════════════════╗");
-            System.out.println("\033[1;94m║                                                               ║");
-            System.out.println("\033[1;94m║              \033[1;97m1. Hiển thị danh sách sản phẩm" + RESET + "\033[1;94m                   ║");
-            System.out.println("\033[1;94m║              \033[1;97m2. Thêm mới 1 hoặc nhiều sản phẩm " + RESET + "\033[1;94m               ║");
-            System.out.println("\033[1;94m║              \033[1;97m3. Sửa thông tin sản phẩm" + RESET + "\033[1;94m                        ║");
-            System.out.println("\033[1;94m║              \033[1;97m4. Tìm kiếm sản phẩm theo tên" + RESET + "\033[1;94m                    ║");
-            System.out.println("\033[1;94m║              \033[1;97m5. Ẩn sản phẩm theo mã sản phẩm" + RESET + "\033[1;94m                  ║");
-            System.out.println("\033[1;94m║              \033[1;97m0. Thoát" + RESET + "\033[1;94m                                         ║");
-            System.out.println("\033[1;94m║                                                               ║");
-            System.out.println("\033[1;94m╚═══════════════════════════════════════════════════════════════╝" + RESET);
+            System.out.println("\033[1;94m╔════════════════ QUẢN LÝ SẢN PHẨM ═════════════════╗");
+            System.out.println("\033[1;94m║" + RESET + "               " + Utils.getCurrentDateTime() + " \033[1;94m                ║");
+            System.out.println("\033[1;94m║═══════════════════════════════════════════════════║" + RESET);
+            System.out.println("\033[1;94m║         \033[1;97m1. Hiển thị danh sách sản phẩm" + RESET + "\033[1;94m            ║");
+            System.out.println("\033[1;94m║         \033[1;97m2. Thêm mới 1 hoặc nhiều sản phẩm " + RESET + "\033[1;94m        ║");
+            System.out.println("\033[1;94m║         \033[1;97m3. Sửa thông tin sản phẩm" + RESET + "\033[1;94m                 ║");
+            System.out.println("\033[1;94m║         \033[1;97m4. Tìm kiếm sản phẩm theo tên" + RESET + "\033[1;94m             ║");
+            System.out.println("\033[1;94m║         \033[1;97m5. Ẩn sản phẩm theo mã sản phẩm" + RESET + "\033[1;94m           ║");
+            System.out.println("\033[1;94m║         \033[1;97m0. Quay lại" + RESET + "\033[1;94m                               ║");
+            System.out.println("\033[1;94m╚═══════════════════════════════════════════════════╝" + RESET);
             System.out.print("Mời lựa chọn (1/2/3/4/5/0): ");
             switch (Validate.validateInt()) {
                 case 1:
@@ -62,7 +64,7 @@ public class ProductManagement {
         System.out.println("+--------------+--------------------------+-------------------------------+---------------------+-----------+---------------------+-----------------------+");
         System.out.println("                                                                  \033[1;94mDANH SÁCH SẢN PHẨM" + RESET);
         System.out.println("+--------------+--------------------------+-------------------------------+---------------------+-----------+---------------------+-----------------------+");
-        System.out.println("|  Product ID  |       Product Name       |          Description          |      Unit Price     |   Stock   |       Catalog       |         Status        |");
+        System.out.println("| Mã sản phẩm  |       Tên sản phẩm       |             Mô tả             |       Đơn giá       |   SL Kho  |      Danh mục       |       Trạng thái      |");
         System.out.println("+--------------+--------------------------+-------------------------------+---------------------+-----------+---------------------+-----------------------+");
         for (int i = 0; i < productService.findAll().size(); i++) {
             if (productService.findAll().get(i).getProductId() == hiddenNum) {
@@ -74,7 +76,7 @@ public class ProductManagement {
                 switch (Validate.validateInt()) {
                     case 1:
                         productService.findAll().get(i).setStatus(!productService.findAll().get(i).isStatus());
-                        System.out.println("Đổi thành công ");
+                        System.out.println(GREEN + "Đổi thành công " + RESET);
                         productService.updateData();
                         break;
                     case 2:
@@ -96,7 +98,7 @@ public class ProductManagement {
         System.out.println("+--------------+--------------------------+-------------------------------+---------------------+-----------+---------------------+-----------------------+");
         System.out.println("                                                                  \033[1;94mDANH SÁCH SẢN PHẨM" + RESET);
         System.out.println("+--------------+--------------------------+-------------------------------+---------------------+-----------+---------------------+-----------------------+");
-        System.out.println("|  Product ID  |       Product Name       |          Description          |      Unit Price     |   Stock   |       Catalog       |         Status        |");
+        System.out.println("| Mã sản phẩm  |       Tên sản phẩm       |             Mô tả             |       Đơn giá       |   SL Kho  |      Danh mục       |       Trạng thái      |");
         System.out.println("+--------------+--------------------------+-------------------------------+---------------------+-----------+---------------------+-----------------------+");
         for (Product pro : productService.findAll()) {
             if (pro.getProductName().toLowerCase().contains(findName.toLowerCase())) {
@@ -105,14 +107,14 @@ public class ProductManagement {
             }
         }
         System.out.println("+--------------+--------------------------+-------------------------------+---------------------+-----------+---------------------+-----------------------+");
-        System.out.println("Đã tìm xong !");
+        System.out.println(GREEN + "Đã tìm xong !" + RESET);
         if (!isFound) {
-            System.out.println("Không có sản phẩm này!");
+            System.out.println(RED + "Không có sản phẩm này!" + RESET);
         }
     }
 
     private void handleEditProduct() {
-        handleDisplayProducts();
+//        handleDisplayProducts();
         System.out.println("Nhập id sản phẩm bạn muốn chỉnh sửa thông tin: ");
         int idEdit = Validate.validateInt();
         List<Product> productsToEdit = new ArrayList<>();
@@ -167,8 +169,13 @@ public class ProductManagement {
                             switch (Validate.validateInt()) {
                                 case 1:
                                     pro.setStatus(!pro.isStatus());
-                                    System.out.println("Đổi thành công");
+                                    System.out.println(GREEN + "Đổi thành công" + RESET);
                                     productService.updateData();
+//                                    if (pro.getCategory().isStatus()){
+//                                    }else {
+//                                        System.out.println(RED+"Danh mục của sản phẩm này hện đang ngừng hoạt động, hãy đổi trạng thái danh mục trước"+RESET);
+//                                        return;
+//                                    }
                                     break;
                                 case 2:
                                     break;
@@ -182,11 +189,11 @@ public class ProductManagement {
                             break;
                     }
                 }
-                updateCategory(pro.getCategory());
+//                updateCategory(pro.getCategory());
                 productService.save(pro);
             }
         }
-        System.out.println("Thay đổi thành công!");
+        System.out.println(GREEN + "Thay đổi thành công!" + RESET);
     }
 
     private void handleAddNewProduct() {
@@ -200,7 +207,7 @@ public class ProductManagement {
             while (true) {
                 String proName = Validate.validateString();
                 if (productService.isExistProductName(proName)) {
-                    System.out.println("Sản phẩm này đã tồn tại. Mời nhập lại: ");
+                    System.out.println(RED + "Sản phẩm này đã tồn tại. Mời nhập lại: " + RESET);
                 } else {
                     product.setProductName(proName);
                     break;
@@ -220,7 +227,7 @@ public class ProductManagement {
                     product.setCategory(categoryService.findAll().get(choiceNum - 1));
                     break;
                 } else {
-                    System.out.println("Không có danh mục này này, mời nhập lại: ");
+                    System.out.println(RED + "Không có danh mục này này, mời nhập lại: " + RESET);
                 }
             }
             System.out.println("Nhập mô tả: ");
@@ -230,7 +237,7 @@ public class ProductManagement {
             System.out.println("Nhập số lượng trong kho: ");
             product.setStock(Validate.validateInt());
             productService.save(product);
-            System.out.println("Thêm mới sản phẩm thành công !");
+            System.out.println(GREEN + "Thêm mới sản phẩm thành công !" + RESET);
         }
     }
 
@@ -238,26 +245,29 @@ public class ProductManagement {
         System.out.println("+--------------+--------------------------+-------------------------------+---------------------+-----------+---------------------+-----------------------+");
         System.out.println("                                                                  \033[1;94mDANH SÁCH SẢN PHẨM" + RESET);
         System.out.println("+--------------+--------------------------+-------------------------------+---------------------+-----------+---------------------+-----------------------+");
-        System.out.println("|  Product ID  |       Product Name       |          Description          |      Unit Price     |   Stock   |       Catalog       |         Status        |");
+        System.out.println("| Mã sản phẩm  |       Tên sản phẩm       |             Mô tả             |       Đơn giá       |   SL Kho  |      Danh mục       |       Trạng thái      |");
         System.out.println("+--------------+--------------------------+-------------------------------+---------------------+-----------+---------------------+-----------------------+");
         productService.findAll().sort((p1, p2) -> p2.getProductId() - p1.getProductId());
         for (Product pro : productService.findAll()) {
-            System.out.println(pro);
+//            if (!pro.getCategory().isStatus()) {
+//                pro.setStatus(!pro.isStatus());
+//            }
+                System.out.println(pro);
         }
         System.out.println("+--------------+--------------------------+-------------------------------+---------------------+-----------+---------------------+-----------------------+");
     }
 
-    private void updateCategory(Category category) {
-        List<Product> productsToUpdate = new ArrayList<>();
-
-        for (Product pro : productService.findAll()) {
-            if (pro.getCategory().getCategoryId() == category.getCategoryId()) {
-                pro.setCategory(category);
-                productsToUpdate.add(pro);
-            }
-        }
-        for (Product product : productsToUpdate) {
-            productService.save(product);
-        }
-    }
+//    private void updateCategory(Category category) {
+//        List<Product> productsToUpdate = new ArrayList<>();
+//
+//        for (Product pro : productService.findAll()) {
+//            if (pro.getCategory().getCategoryId() == category.getCategoryId()) {
+//                pro.setCategory(category);
+//                productsToUpdate.add(pro);
+//            }
+//        }
+//        for (Product product : productsToUpdate) {
+//            productService.save(product);
+//        }
+//    }
 }
