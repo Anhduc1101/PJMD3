@@ -20,7 +20,7 @@ public class MenuAdmin {
             System.out.println("\033[1;94m║══════════════════════════════════════════║"+RESET);
             System.out.println("\033[1;94m║           \033[1;97m1. Quản lý người dùng"+RESET+"\033[1;94m          ║");
             System.out.println("\033[1;94m║           \033[1;97m2. Quản lý danh mục"+RESET+"\033[1;94m            ║");
-            System.out.println("\033[1;94m║           \033[1;97m3. quản lý sản phẩm"+RESET+"\033[1;94m            ║");
+            System.out.println("\033[1;94m║           \033[1;97m3. Quản lý sản phẩm"+RESET+"\033[1;94m            ║");
             System.out.println("\033[1;94m║           \033[1;97m4. Quản lý đơn hàng"+RESET+"\033[1;94m            ║");
             System.out.println("\033[1;94m║           \033[1;97m5. Thông tin cá nhân"+RESET+"\033[1;94m           ║");
             System.out.println("\033[1;94m║           \033[1;97m0. Thoát"+RESET+"\033[1;94m                       ║");
@@ -37,6 +37,7 @@ public class MenuAdmin {
                     new ProductManagement().menu();
                     break;
                 case 4:
+                    new OrderManagement().menu();
                     break;
                      case 5:
                          new MyProfile().menu();

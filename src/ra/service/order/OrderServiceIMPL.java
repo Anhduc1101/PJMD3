@@ -3,6 +3,7 @@ package ra.service.order;
 import ra.config.Config;
 import ra.model.Order;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class OrderServiceIMPL implements IOrderService{
@@ -10,6 +11,9 @@ public class OrderServiceIMPL implements IOrderService{
     public static List<Order> orderList;
     static {
         orderList=config.readFile(Config.URL_ORDER);
+        if (orderList==null){
+            orderList=new ArrayList<>();
+        }
     }
     @Override
     public List<Order> findAll() {
@@ -51,7 +55,7 @@ updateData();
                 idMax=order.getOrderId();
             }
         }
-        return idMax+1;
+        return (idMax+1);
     }
 
     @Override

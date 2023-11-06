@@ -18,11 +18,11 @@ public class MenuUser {
         do {
             System.out.println("Xin chào : " + RED + new Config<Users>().readFile(Config.URL_USER_LOGIN).getName() + RESET);
             System.out.println("\033[1;94m╔══════════════ TRANG NGƯỜI DÙNG ════════════════╗");
-            System.out.println("\033[1;94m║"+RESET+"           "+Utils.getCurrentDateTime() + " \033[1;94m                 ║");
+            System.out.println("\033[1;94m║"+RESET+"             "+Utils.getCurrentDateTime() + " \033[1;94m               ║");
             System.out.println("\033[1;94m║════════════════════════════════════════════════║"+RESET);
             System.out.println("\033[1;94m║           \033[1;97m1. Trang chủ"+RESET+"\033[1;94m                         ║");
             System.out.println("\033[1;94m║           \033[1;97m2. Giỏ hàng"+RESET+"\033[1;94m                          ║");
-            System.out.println("\033[1;94m║           \033[1;97m3. Trang liên hệ"+RESET+"\033[1;94m                     ║");
+            System.out.println("\033[1;94m║           \033[1;97m3. Đặt hàng"+RESET+"\033[1;94m                          ║");
             System.out.println("\033[1;94m║           \033[1;97m4. Thông tin cá nhân"+RESET+"\033[1;94m                 ║");
             System.out.println("\033[1;94m║           \033[1;97m5. Lịch sử đơn hàng"+RESET+"\033[1;94m                  ║");
             System.out.println("\033[1;94m║           \033[1;97m0. Đăng xuất"+RESET+"\033[1;94m                         ║");
@@ -36,14 +36,13 @@ public class MenuUser {
                     new UserCart().menu();
                     break;
                 case 3:
-                    System.out.println("Tính năng này chưa được hoàn thiện");
+                    new UserOrder().handleCheckOut();
                     break;
                 case 4:
                     new MyProfile().menu();
                     break;
                 case 5:
-//                    System.out.println("Tính năng này chưa được hoàn thiện");
-                    new UserOrderHistory().showHistory();
+                    new UserOrderHistory().menu();
                     break;
                 case 0:
                     new Config<Users>().writeFile(Config.URL_USER_LOGIN, null);

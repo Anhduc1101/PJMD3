@@ -1,47 +1,93 @@
 package ra.View.account.user;
 
-import ra.model.Cart;
-import ra.model.Product;
-import ra.service.cart.CartServiceIMPL;
-import ra.service.cart.ICartService;
-import ra.service.product.IProductService;
-import ra.service.product.ProductServiceIMPL;
+import ra.config.Config;
+import ra.config.Validate;
+import ra.model.Order;
+import ra.model.Users;
+import ra.service.order.IOrderService;
+import ra.service.order.OrderServiceIMPL;
 
-import java.text.NumberFormat;
-import java.util.Locale;
+import java.util.List;
+import java.util.stream.Collectors;
 
+import static ra.config.Color.RED;
 import static ra.config.Color.RESET;
 
 public class UserOrderHistory {
-    ICartService cartService = new CartServiceIMPL();
-    IProductService productService=new ProductServiceIMPL();
+    IOrderService orderService = new OrderServiceIMPL();
 
-    public void showHistory() {
-        Cart cart=cartService.findCartByUserLogin();
-        double total = 0.0;
-        NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
-        System.out.println("+---------------+-------------------------+------------------+--------------------+--------------------+");
-        System.out.println("                              \033[1;94mDANH SÁCH CÁC SẢN PHẨM TRONG GIỎ HÀNG CỦA BẠN" + RESET);
-        System.out.println("+---------------+-------------------------+------------------+--------------------+--------------------+");
-        System.out.println("|  Mã sản phẩm  |      Tên sản phẩm       |     Số lượng     |       Đơn giá      |      Tạm tính      |");
-        System.out.println("+---------------+-------------------------+------------------+--------------------+--------------------+");
-        for (int idPro : cart.getProducts().keySet()) {
-            Product pro = productService.findById(idPro);
-            double subTotal = cart.getProducts().get(idPro) * pro.getUnitPrice();
-            System.out.printf("|       %-5d   |  %-20s   |        %-5d     |       %-10s   |       %-10s   |\n",
-                    idPro, pro.getProductName(), cart.getProducts().get(idPro),
-                    currencyFormat.format(pro.getUnitPrice()), currencyFormat.format(subTotal));
-            total += subTotal;
-        System.out.println("+---------------+-------------------------+------------------+--------------------+--------------------+");
-        System.out.printf("|  %-5s %-20s   |       %-30s  |       %-10s   |\n","Trạng thái   : ",(cart.isStatus()?"Được xác nhận":(cart.isStatus()?"Bị hủy":"đã bị hủy")),"       Tổng tiền",total);
-//        System.out.printf("|  Trạng thái:     "+(cart.isStatus()?"Được xác nhận":(cart.isStatus()?"Bị hủy":"đã thành công"))+"                 |             \033[1;97mTổng tiền:" + RESET + "                |       \033[0;32m%-10s" + RESET + "   |\n", currencyFormat.format(total));
-        System.out.println("+---------------+-------------------------+------------------+--------------------+--------------------+");
+    public void menu() {
+        do {
+            System.out.println("**********************MENU************************");
+            System.out.println("1. Lịch sử đặt hàng");
+            System.out.println("2. Hủy");
+            System.out.println("0. Thoát");
+            System.out.print("Mời lựa chọn (1/2/0): ");
+            switch (Validate.validateInt()) {
+                case 1:
+                    handleShowHistory();
+                    break;
+                case 2:
+                    handleCancelOrder();
+                    break;
+                case 0:
+                    System.exit(0);
+                    break;
+                default:
+                    System.out.println("Lựa chọn không hợp lệ. Vui lòng chọn lại.");
+                    break;
+            }
+        } while (true);
+    }
+
+    private void handleCancelOrder() {
+        System.out.println("Nhập mã đơn bạn muốn hủy: ");
+        int cancelId = Validate.validateInt();
+//        System.out.println("+--------+--------------+-------------------+--------------------+---------------------+--------------+-------------+----------+--------------------------+-------------------+");
+//        System.out.println("                                                                         \033[1;94mLỊCH SỬ ĐƠN HÀNG" + RESET);
+//        System.out.println("+--------+--------------+-------------------+--------------------+---------------------+--------------+-------------+----------+--------------------------+-------------------+");
+//        System.out.println("| Mã đơn | Mã người đặt |   Tên người đặt   |    Số đện thoại    |       Địa chỉ       |   Tổng giá   | Mã sản phẩm | Số lượng |         Đặt lúc          |     Trạng thái    ");
+//        System.out.println("+--------+--------------+-------------------+--------------------+---------------------+--------------+-------------+----------+--------------------------+-------------------+");
+        for (Order order : orderService.findAll()) {
+            for (Integer idPro : order.getOrderDetails().keySet()) {
+                if (order.getOrderId() == cancelId) {
+                    handleShowHistory();
+                    System.out.println("Bạn có chắc chắn muốn hủy đơn không? ");
+                    System.out.println("1. Có");
+                    System.out.println("2. Không");
+                    System.out.println("Mời lựa chọn (0/1/2): ");
+                    switch (Validate.validateInt()) {
+                        case 1:
+                            handleShowHistory();
+                            break;
+                        case 2:
+                            return;
+                        default:
+                            System.out.println("Không có lựa chọn này! ");
+                            break;
+                    }
+                }else {
+                    System.out.println(RED+"Không có lựa chọn này! "+RESET);
+                    return;
+                }
+//                System.out.println("+--------+--------------+-------------------+--------------------+---------------------+--------------+-------------+----------+--------------------------+-------------------+");
+            }
         }
+    }
 
-
-//        System.out.println(cart);
-//        for (Cart cart:cartService.findAll()) {
-//            System.out.println(cart);
-//        }
+    public void handleShowHistory() {
+        System.out.println("+--------+--------------+-------------------+--------------------+---------------------+--------------+-------------+----------+--------------------------+-------------------+");
+        System.out.println("                                                                         \033[1;94mLỊCH SỬ ĐƠN HÀNG" + RESET);
+        System.out.println("+--------+--------------+-------------------+--------------------+---------------------+--------------+-------------+----------+--------------------------+-------------------+");
+        System.out.println("| Mã đơn | Mã người đặt |   Tên người đặt   |    Số đện thoại    |       Địa chỉ       |   Tổng giá   | Mã sản phẩm | Số lượng |         Đặt lúc          |     Trạng thái    ");
+        System.out.println("+--------+--------------+-------------------+--------------------+---------------------+--------------+-------------+----------+--------------------------+-------------------+");
+        List<Order> orders = orderService.findAll().stream().filter(o -> o.getUserId() == new Config<Users>().readFile(Config.URL_USER_LOGIN).getId()).collect(Collectors.toList());
+        for (Order order : orders) {
+            for (Integer idPro : order.getOrderDetails().keySet()) {
+                System.out.printf("    %-5d|      %-5d   |  %-10s       |     %-10s     |  %-10s         |    %-10s|      %-5s  |     %-5d| %-20s  |     %-14s\n",
+                        order.getOrderId(), order.getUserId(), order.getName(), order.getPhoneNumber(), order.getAddress(), order.getTotal(), idPro, order.getOrderDetails().get(idPro), order.getOrderAt(), order.getOrderStatus().getVietnameseName());
+            }
+        }
+        System.out.println("+--------+--------------+-------------------+--------------------+---------------------+--------------+-------------+----------+--------------------------+-------------------+");
     }
 }

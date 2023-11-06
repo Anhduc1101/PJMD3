@@ -9,7 +9,7 @@ import ra.model.Users;
 import ra.service.users.IUserService;
 import ra.service.users.UserServiceIMPL;
 
-import static ra.config.Color.RESET;
+import static ra.config.Color.*;
 
 
 public class Home {
@@ -17,6 +17,7 @@ public class Home {
 
     public void menu() {
         do {
+            userService.findAll().sort((u1,u2)->u2.getId()- u1.getId());
             for (Users users : userService.findAll()) {
                 System.out.println(users);
             }
@@ -47,7 +48,7 @@ public class Home {
     }
 
     private void register() {
-        System.out.println(" *** FORM REGISTER *** ");
+        System.out.println(" *** Đăng ký *** ");
         Users users = new Users();
         users.setId(userService.getNewId());
         System.out.println("Nhập họ tên: ");
@@ -56,7 +57,7 @@ public class Home {
         while (true) {
             String username = Validate.validateString();
             if (userService.existUsername(username)) {
-                System.out.println("Tên đăng nhập đã tồn tại. Mời nhập lại: ");
+                System.out.println(RED+"Tên đăng nhập đã tồn tại. Mời nhập lại: "+RESET);
             } else {
                 users.setUsername(username);
                 break;
@@ -70,7 +71,7 @@ public class Home {
             if (users.getPassword().equals(repeatPass)) {
                 break;
             } else {
-                System.out.println("Nhập lại mật khẩu chưa đúng. Mời nhập lại: ");
+                System.out.println(RED+"Nhập lại mật khẩu chưa đúng. Mời nhập lại: "+RESET);
             }
         }
 
@@ -88,19 +89,19 @@ public class Home {
         System.out.println("Nhập số điện thoại: ");
         users.setPhone(Validate.validatePhoneNumber());
         userService.save(users);
-        System.out.println("Tạo tài khoản thành công");
+        System.out.println(GREEN+"Tạo tài khoản thành công"+RESET);
 //        login();
     }
 
     private void login() {
-        System.out.println(" *** FORM LOGIN *** ");
+        System.out.println(" *** Đăng nhập *** ");
         System.out.println("Nhập tên tài khoản: ");
         String name = Validate.validateString();
         System.out.println("Nhập mật khẩu: ");
         String pass = Validate.validateString();
         Users users = userService.checkLogin(name, pass);
         if (users == null) {
-            System.out.println("Tài khoản hoặc mật khẩu không đúng!");
+            System.out.println(RED+"Tài khoản hoặc mật khẩu không đúng!"+RESET);
         } else {
             checkRoleLogin(users);
         }
@@ -112,18 +113,18 @@ public class Home {
 //                userLogin = users;
             new Config<Users>().writeFile(Config.URL_USER_LOGIN, users);// ghi đối tượng Users đang đăng nhập vào file
             // chuyển đến trang quản lý admin
-            System.out.println("Đăng nhập thành công! ");
+            System.out.println(GREEN+"Đăng nhập thành công! "+RESET);
             new MenuAdmin().menuAdmin();
         } else {
             if (users.isStatus()) {
                 // chuyển đến trang user
 //                    userLogin = users;
                 new Config<Users>().writeFile(Config.URL_USER_LOGIN, users);
-                System.out.println("Đăng nhập thành công! ");
+                System.out.println(GREEN+"Đăng nhập thành công! "+RESET);
                 new MenuUser().menuUser();
 //                    user();
             } else {
-                System.out.println("Tài khoản của bạn đang bị khóa, liên hệ admin để mở khóa !");
+                System.out.println(RED+"Tài khoản của bạn đang bị khóa, liên hệ admin để mở khóa !"+RESET);
             }
         }
     }
