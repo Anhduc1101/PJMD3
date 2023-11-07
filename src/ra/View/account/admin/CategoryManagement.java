@@ -22,8 +22,8 @@ public class CategoryManagement {
     public void menu() {
         do {
             System.out.println("\033[1;94m╔══════════════════════ QUẢN LÝ DANH MỤC ════════════════════╗");
-            System.out.println("\033[1;94m║"+RESET+"                      "+ Utils.getCurrentDateTime() + " \033[1;94m                  ║");
-            System.out.println("\033[1;94m║════════════════════════════════════════════════════════════║"+RESET);
+            System.out.println("\033[1;94m║" + RESET + "                      " + Utils.getCurrentDateTime() + " \033[1;94m                  ║");
+            System.out.println("\033[1;94m║════════════════════════════════════════════════════════════║" + RESET);
             System.out.println("\033[1;94m║          \033[1;97m1. Hiển thị tất cả danh mục" + RESET + "\033[1;94m                       ║");
             System.out.println("\033[1;94m║          \033[1;97m2. Thêm mới 1 hoặc nhiều danh mục " + RESET + "\033[1;94m                ║");
             System.out.println("\033[1;94m║          \033[1;97m3. Tìm kiếm danh mục theo tên" + RESET + "\033[1;94m                     ║");
@@ -51,7 +51,7 @@ public class CategoryManagement {
                 case 0:
                     return;
                 default:
-                    System.out.println("Lựa chọn không hợp lệ. Vui lòng chọn lại.");
+                    System.out.println(RED + "Lựa chọn không hợp lệ. Vui lòng chọn lại." + RESET);
                     break;
             }
         } while (true);
@@ -82,14 +82,15 @@ public class CategoryManagement {
                 switch (Validate.validateInt()) {
                     case 1:
                         categoryService.findAll().get(i).setStatus(!categoryService.findAll().get(i).isStatus());
-                        System.out.println(GREEN+"Ẩn thành công"+RESET);
-                        categoryService.updateData();
+                        System.out.println(GREEN + "Ẩn thành công" + RESET);
+//                        categoryService.updateData();
+                        categoryService.save(categoryService.findAll().get(i));
                         updateCategory(categoryService.findAll().get(i));
                         break;
                     case 2:
                         break;
                     default:
-                        System.out.println("Không có lựa chọn này! ");
+                        System.out.println(RED + "Lựa chọn không hợp lệ. Vui lòng chọn lại." + RESET);
                         break;
                 }
             }
@@ -115,12 +116,16 @@ public class CategoryManagement {
                         case 1:
                             System.out.println("Nhập tên mới: ");
                             cat.setCategoryName(Validate.validateString());
-                            categoryService.updateData();
+                            System.out.println(GREEN+"Đổi thành công!"+RESET);
+                            updateCategory(cat);
+                            categoryService.save(cat);
                             break;
                         case 2:
                             System.out.println("Nhập mô tả mới: ");
                             cat.setDescription(Validate.validateString());
-                            categoryService.updateData();
+                            System.out.println(GREEN+"Đổi thành công!"+RESET);
+                            updateCategory(cat);
+                            categoryService.save(cat);
                             break;
                         case 3:
                             System.out.println("Bạn có muốn thay đổi trạng thái không? ");
@@ -129,10 +134,14 @@ public class CategoryManagement {
                             switch (Validate.validateInt()) {
                                 case 1:
                                     cat.setStatus(!cat.isStatus());
-                                    System.out.println("Đổi thành công!");
-                                    categoryService.updateData();
+                                    System.out.println(GREEN+"Đổi thành công!"+RESET);
+                                    updateCategory(cat);
+                                    categoryService.save(cat);
                                     break;
                                 case 2:
+                                    break;
+                                default:
+                                    System.out.println(RED + "Lựa chọn không hợp lệ. Vui lòng chọn lại." + RESET);
                                     break;
                             }
                             break;
@@ -140,15 +149,13 @@ public class CategoryManagement {
                             isDone = true;
                             return;
                         default:
-                            System.out.println("Không có lựa chọn này!");
+                            System.out.println(RED + "Lựa chọn không hợp lệ. Vui lòng chọn lại." + RESET);
                             break;
                     }
                 }
-//                updateCategory(cat);
-                categoryService.save(cat);
             }
         }
-        System.out.println("Thay đổi thành công !");
+        System.out.println(GREEN + "Thay đổi thành công !" + RESET);
     }
 
     private void handleFindCategoryByCategoryName() {
@@ -170,7 +177,7 @@ public class CategoryManagement {
         System.out.println("+---------------+---------------------------+-------------------------------+---------------------------+");
         System.out.println(GREEN + "Tìm kiếm thành công" + RESET);
         if (!isFound) {
-            System.out.println(RED+"Không có danh mục này !"+RESET);
+            System.out.println(RED + "Không có danh mục này !" + RESET);
 
         }
     }
@@ -186,7 +193,7 @@ public class CategoryManagement {
             while (true) {
                 String catName = Validate.validateString();
                 if (categoryService.existCategoryName(catName)) {
-                    System.out.println(RED+"Danh mục này đã tồn tại. Mời nhập lại: "+RESET);
+                    System.out.println(RED + "Danh mục này đã tồn tại. Mời nhập lại: " + RESET);
                 } else {
                     cat.setCategoryName(catName);
                     break;
@@ -195,7 +202,7 @@ public class CategoryManagement {
             System.out.println("Nhập mô tả: ");
             cat.setDescription(Validate.validateString());
             categoryService.save(cat);
-            System.out.println(GREEN+"Thêm mới danh mục thành công"+RESET);
+            System.out.println(GREEN + "Thêm mới danh mục thành công" + RESET);
         }
     }
 

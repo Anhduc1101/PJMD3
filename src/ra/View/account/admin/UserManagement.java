@@ -84,6 +84,9 @@ public class UserManagement {
                                 case 2:
                                     System.out.println("Không");
                                     return;
+                                default:
+                                    System.out.println(RED+"Lựa chọn không hợp lệ. Vui lòng chọn lại."+RESET);
+                                    break;
                             }
                         }
                     }

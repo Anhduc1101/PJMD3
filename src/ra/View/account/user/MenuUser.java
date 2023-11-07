@@ -49,7 +49,7 @@ public class MenuUser {
                     new Home().menu();
                     break;
                 default:
-                    System.out.println("Lựa chọn không hợp lệ. Vui lòng chọn lại.");
+                    System.out.println(RED+"Lựa chọn không hợp lệ. Vui lòng chọn lại."+RESET);
                     break;
             }
         } while (true);

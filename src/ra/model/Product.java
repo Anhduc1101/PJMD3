@@ -109,6 +109,6 @@ public class Product implements Serializable, Comparable<Product> {
 
     @Override
     public int compareTo(Product o) {
-        return (int) -(o.getUnitPrice() - this.getUnitPrice());
+        return (int) (o.getUnitPrice() - this.getUnitPrice());
     }
 }

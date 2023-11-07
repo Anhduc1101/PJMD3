@@ -6,13 +6,18 @@ import ra.config.Utils;
 import ra.config.Validate;
 import ra.model.Order;
 import ra.model.OrderStatus;
+import ra.model.Product;
 import ra.service.order.IOrderService;
 import ra.service.order.OrderServiceIMPL;
+import ra.service.product.IProductService;
+import ra.service.product.ProductServiceIMPL;
+
 import java.util.List;
 import static ra.config.Color.*;
 
 public class OrderManagement {
     IOrderService orderService = new OrderServiceIMPL();
+    IProductService productService=new ProductServiceIMPL();
     public void menu() {
                 do {
                     System.out.println("\033[1;94m╔════════════════ QUẢN LÝ ĐƠN HÀNG ═════════════════╗");
@@ -41,7 +46,7 @@ public class OrderManagement {
                         case 0:
                             return;
                         default:
-                            System.out.println("Lựa chọn không hợp lệ. Vui lòng chọn lại.");
+                            System.out.println(RED+"Lựa chọn không hợp lệ. Vui lòng chọn lại."+RESET);
                             break;
                     }
                 } while (true);
@@ -107,7 +112,7 @@ public class OrderManagement {
                 case 0:
                 return;
             default:
-                System.out.println("Không có lựa chọn này!");
+                System.out.println(RED+"Lựa chọn không hợp lệ. Vui lòng chọn lại."+RESET);
                 break;
         }
     }
@@ -134,11 +139,11 @@ public class OrderManagement {
 
     public void handleOrderDetails() {
         orderService.findAll().sort((o1, o2) -> o2.getOrderAt().compareTo(o1.getOrderAt()));
-        for (Order o : orderService.findAll()) {
-            if (o.getOrderStatus() == OrderStatus.WAITING) {
-                System.out.println(o);
-            }
-        }
+//        for (Order o : orderService.findAll()) {
+//            if (o.getOrderStatus() == OrderStatus.WAITING) {
+//                System.out.println(o);
+//            }
+//        }
         System.out.println("Chọn mã đơn hàng bạn muốn xác nhận: ");
         int idChange = Validate.validateInt();
         Order orderById = orderService.findById(idChange);
@@ -149,7 +154,8 @@ public class OrderManagement {
             System.out.println("Đơn hàng đã " + orderById.getOrderStatus().getVietnameseName());
             return;
         } else {
-            System.out.println("MÃ bạn chọn là: " + orderById);
+            System.out.println("Mã bạn chọn là: " + orderById.getOrderId());
+
             System.out.println("Bạn có muốn thay đổi trạng thái đơn hàng này không? ");
             System.out.println("1. Xác nhận đơn hàng");
             System.out.println("2. Hủy đơn hàng");
@@ -160,18 +166,25 @@ public class OrderManagement {
                     System.out.println("Trạng thái đơn hàng hiện tại là: " + orderById.getOrderStatus().getVietnameseName());
                     orderById.setOrderStatus(OrderStatus.CONFIRM);
                     System.out.println( "Trạng thái đơn hàng đã được chuyển thành " +orderById.getOrderStatus().getVietnameseName() );
-                    orderService.updateData();
+                    orderService.save(orderById);
                     break;
                 case 2:
                     System.out.println("Trạng thái đơn hàng hiện tại là: " + orderById.getOrderStatus().getVietnameseName());
                     orderById.setOrderStatus(OrderStatus.CANCEL);
+                    for (int idPro: orderById.getOrderDetails().keySet()){
+                        Product product = productService.findById(idPro);
+                        if (product.getProductId()==idPro){
+                            product.setStock(product.getStock() + orderById.getOrderDetails().get(idPro));
+                            orderService.save(orderById);
+                            productService.save(product);
+                        }
+                    }
                     System.out.println("Trạng thái đơn hàng đã được chuyển thành " +orderById.getOrderStatus().getVietnameseName() );
-                    orderService.updateData();
                     break;
                 case 0:
                     return;
                 default:
-                    System.out.println("Không có lựa chọn này! ");
+                    System.out.println(RED+"Lựa chọn không hợp lệ. Vui lòng chọn lại."+RESET);
                     break;
             }
         }

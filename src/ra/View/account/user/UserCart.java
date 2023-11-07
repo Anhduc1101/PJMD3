@@ -61,7 +61,7 @@ public class UserCart {
                 case 0:
                     return;
                 default:
-                    System.out.println("Lựa chọn không hợp lệ. Vui lòng chọn lại.");
+                    System.out.println(RED + "Lựa chọn không hợp lệ. Vui lòng chọn lại." + RESET);
                     break;
             }
         } while (true);
@@ -76,7 +76,7 @@ public class UserCart {
         switch (Validate.validateInt()) {
             case 1:
                 if (cart.getProducts().isEmpty()) {
-                    System.out.println("Giỏ hàng trống, không được đặt!");
+                    System.out.println(RED + "Giỏ hàng trống, không được đặt!" + RESET);
                     break;
                 } else {
                     Order newOrder = new Order();
@@ -88,8 +88,7 @@ public class UserCart {
                     String inputAddress = Validate.validateString();
                     System.out.println("Nhập vào sô điện thoại của người nhận: ");
                     String inputPhone = Validate.validatePhoneNumber();
-//                    newOrder.setTotal(cart.);
-                    System.out.println("Đặt hàng thành công");
+                    System.out.println(GREEN + "Đặt hàng thành công" + RESET);
                     cart.getProducts().clear();
                 }
 //                cartService.save(cart);
@@ -97,7 +96,7 @@ public class UserCart {
             case 2:
                 break;
             default:
-                System.out.println("Không có lựa chọn này! ");
+                System.out.println(RED + "Lựa chọn không hợp lệ. Vui lòng chọn lại." + RESET);
                 break;
 
         }
@@ -106,38 +105,34 @@ public class UserCart {
 
 
     private void handleAddToCart() {
-        for (Product pro : productService.findAll()) {
-            if (pro.isStatus()) {
-                System.out.println(pro);
-            }
-        }
+        handleDisplayProductInfo();
 //        đặt 1 cái
         System.out.println("Chọn mã sản phẩm cần đặt(chon 0 để thoát): ");
         int idBuy = Validate.validateInt();
-        Product proBuy = productService.findById(idBuy);
         if (idBuy == 0) {
             return;
         }
-        if (proBuy == null) {
+        if (productService.findById(idBuy) == null || !productService.findById(idBuy).isStatus() || !productService.findById(idBuy).getCategory().isStatus()) {
             System.out.println(RED + "Không tồn tại theo ID vừa nhập! " + RESET);
-        } else {
-//            int newStock = proBuy.getStock() - 1;
+            return;
+        }
+//      int newStock = proBuy.getStock() - 1;
 //            proBuy.setStock(newStock);
 //            productService.save(proBuy);
-            Users userLogin = new Config<Users>().readFile(Config.URL_USER_LOGIN);
-            if (cart == null) {
-                cart = new Cart(cartService.getNewId(), userLogin.getId(), new HashMap<>(), false);
-            }
-            if (cart.getProducts().containsKey(idBuy)) {
-                cart.getProducts().put(idBuy, cart.getProducts().get(idBuy) + 1);
-            } else {
-                cart.getProducts().put(idBuy, 1);
-            }
-            cartService.save(cart);
-//            System.out.println(cart);
-            System.out.println(GREEN + "Thêm sản phẩm vào giỏ hàng thành công!" + RESET);
+        Users userLogin = new Config<Users>().readFile(Config.URL_USER_LOGIN);
+        if (cart == null) {
+            cart = new Cart(cartService.getNewId(), userLogin.getId(), new HashMap<>(), false);
         }
+        if (cart.getProducts().containsKey(idBuy)) {
+            cart.getProducts().put(idBuy, cart.getProducts().get(idBuy) + 1);
+        } else {
+            cart.getProducts().put(idBuy, 1);
+        }
+        cartService.save(cart);
+//            System.out.println(cart);
+        System.out.println(GREEN + "Thêm sản phẩm vào giỏ hàng thành công!" + RESET);
     }
+
 
     private void handleDeleteProductInCart() {
         handleDisplayCart();
@@ -150,9 +145,8 @@ public class UserCart {
                 iterator.remove();
                 handleDisplayCart();
                 System.out.println(GREEN + "Xóa thành công" + RESET);
-
                 cartService.updateData();
-                return; // Thoát khỏi phương thức sau khi xóa thành công
+                return;
             }
         }
         cartService.save(cart);
@@ -238,7 +232,7 @@ public class UserCart {
 
         System.out.println("Danh sách sản phẩm: ");
         for (Product pro : productService.findAll()) {
-            if (pro.isStatus()) {
+            if (pro.isStatus() && pro.getCategory().isStatus()) {
                 System.out.println(pro);
             }
         }

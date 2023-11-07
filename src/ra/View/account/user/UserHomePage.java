@@ -22,13 +22,13 @@ public class UserHomePage {
     public void menu() {
         do {
             System.out.println("\033[1;94m╔══════════════════════════ TRANG CHỦ  ═══════════════════════════╗");
-            System.out.println("\033[1;94m║"+RESET+"                      "+ Utils.getCurrentDateTime() + " \033[1;94m                       ║");
-            System.out.println("\033[1;94m║═════════════════════════════════════════════════════════════════║"+RESET);
+            System.out.println("\033[1;94m║" + RESET + "                      " + Utils.getCurrentDateTime() + " \033[1;94m                       ║");
+            System.out.println("\033[1;94m║═════════════════════════════════════════════════════════════════║" + RESET);
             System.out.println("\033[1;94m║              \033[1;97m1. Tìm kiếm sản phẩm" + RESET + "\033[1;94m                               ║");
-            System.out.println("\033[1;94m║              \033[1;97m2. Hiển thị sản phẩm nổi bật" + RESET + "\033[1;94m                       ║");
+            System.out.println("\033[1;94m║              \033[1;97m2. Hiển thị sản phẩm nổi bật có giá rẻ nhất" + RESET + "\033[1;94m        ║");
             System.out.println("\033[1;94m║              \033[1;97m3. Hiển thị từng nhóm sản phẩm" + RESET + "\033[1;94m                     ║");
             System.out.println("\033[1;94m║              \033[1;97m4. Danh sách sản phẩm" + RESET + "\033[1;94m                              ║");
-            System.out.println("\033[1;94m║              \033[1;97m5. Danh sách sắp xếp theo giá tăng dần" + RESET + "\033[1;94m             ║");
+            System.out.println("\033[1;94m║              \033[1;97m5. Danh sách sắp xếp theo giá giảm dần" + RESET + "\033[1;94m             ║");
             System.out.println("\033[1;94m║              \033[1;97m0. Quay lại" + RESET + "\033[1;94m                                        ║");
             System.out.println("\033[1;94m╚═════════════════════════════════════════════════════════════════╝" + RESET);
             System.out.print("Mời lựa chọn (1/2/3/4/5/0): ");
@@ -37,7 +37,7 @@ public class UserHomePage {
                     handleFindProduct();
                     break;
                 case 2:
-                    handleDisplayTopTenProductByQuantityInStock();
+                    handleDisplayTopTenProductByUnitPriceCheapest();
                     break;
                 case 3:
                     handleDisplayProductByCategoryId();
@@ -51,7 +51,7 @@ public class UserHomePage {
                 case 0:
                     return;
                 default:
-                    System.out.println("Lựa chọn không hợp lệ. Vui lòng chọn lại.");
+                    System.out.println(RED + "Lựa chọn không hợp lệ. Vui lòng chọn lại." + RESET);
                     break;
             }
         } while (true);
@@ -76,7 +76,7 @@ public class UserHomePage {
 //        }
         Collections.sort(productService.findAll());
         handleDisplayProduct();
-        System.out.println("Đã sắp xếp xong!");
+        System.out.println(GREEN + "Đã sắp xếp xong!" + RESET);
     }
 
     private void handleDisplayProduct() {
@@ -85,44 +85,56 @@ public class UserHomePage {
         System.out.println("+--------------+--------------------------+-------------------------------+---------------------+-----------+---------------------+-----------------------+");
         System.out.println("| Mã sản phẩm  |       Tên sản phẩm       |             Mô tả             |       Đơn giá       |   SL Kho  |      Danh mục       |       Trạng thái      |");
         System.out.println("+--------------+--------------------------+-------------------------------+---------------------+-----------+---------------------+-----------------------+");
-        for (int i = 0; i < productService.findAll().size(); i++) {
-            if (productService.findAll().get(i).isStatus() ) {
-                System.out.println(productService.findAll().get(i));
+        for (Product product : productService.findAll()) {
+            if (product.isStatus() && product.getCategory().isStatus()) {
+                System.out.println(product);
             }
         }
         System.out.println("+--------------+--------------------------+-------------------------------+---------------------+-----------+---------------------+-----------------------+");
     }
 
     private void handleDisplayProductByCategoryId() {
-        for (Category cate: categoryService.findAll()) {
-            if (cate.isStatus()){
-            System.out.println(cate);
+        for (Category cate : categoryService.findAll()) {
+            if (cate.isStatus()) {
+                System.out.println(cate);
             }
         }
         System.out.println("Nhập vào mã danh mục bạn muốn hiển thị: ");
         int cateId = Validate.validateInt();
-        boolean isFound = false;
+        Category cat = categoryService.findById(cateId);
         System.out.println("+--------------+--------------------------+-------------------------------+---------------------+-----------+---------------------+-----------------------+");
         System.out.println("                                                                  \033[1;94mDANH SÁCH SẢN PHẨM" + RESET);
         System.out.println("+--------------+--------------------------+-------------------------------+---------------------+-----------+---------------------+-----------------------+");
         System.out.println("| Mã sản phẩm  |       Tên sản phẩm       |             Mô tả             |       Đơn giá       |   SL Kho  |      Danh mục       |       Trạng thái      |");
         System.out.println("+--------------+--------------------------+-------------------------------+---------------------+-----------+---------------------+-----------------------+");
+        if (cat==null){
+            System.out.println(RED+"Không có danh mục này!"+RESET);
+            return;
+        }
+        if (!cat.isStatus()){
+            System.out.println(RED+"Không có danh mục này!"+RESET);
+            return;
+        }
+        System.out.println(cat);
+        boolean isFound = false;
+
+
         for (int i = 0; i < productService.findAll().size(); i++) {
             if (productService.findAll().get(i).getCategory().getCategoryId()==cateId) {
-                if (productService.findAll().get(i).isStatus()){
+                if (productService.findAll().get(i).isStatus()&&productService.findAll().get(i).getCategory().isStatus()){
                 System.out.println(productService.findAll().get(i));
                 isFound = true;
                 }
             }
         }
         if (!isFound) {
-            System.out.println("Không có nhóm danh mục này");
+            System.out.println(RED+"Không có nhóm sản phẩm nào"+RESET);
         }
         System.out.println("+--------------+--------------------------+-------------------------------+---------------------+-----------+---------------------+-----------------------+");
 
     }
 
-    private void handleDisplayTopTenProductByQuantityInStock() {
+    private void handleDisplayTopTenProductByUnitPriceCheapest() {
         System.out.println("Danh sách 10 sản phẩm có giá rẻ nhất: ");
         System.out.println("+--------------+--------------------------+-------------------------------+---------------------+-----------+---------------------+-----------------------+");
         System.out.println("                                                                  \033[1;94mDANH SÁCH SẢN PHẨM" + RESET);
@@ -164,9 +176,9 @@ public class UserHomePage {
             }
         }
         System.out.println("+--------------+--------------------------+-------------------------------+---------------------+-----------+---------------------+-----------------------+");
-        System.out.println(GREEN+"Đã tìm xong !"+RESET);
+        System.out.println(GREEN + "Đã tìm xong !" + RESET);
         if (!isFound) {
-            System.out.println(RED+"Không tìm thấy sản phẩm này!"+RESET);
+            System.out.println(RED + "Không tìm thấy sản phẩm này!" + RESET);
         }
     }
 }

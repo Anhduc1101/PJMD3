@@ -22,19 +22,19 @@ public class OrderServiceIMPL implements IOrderService{
 
     @Override
     public void save(Order order) {
-if (findById(order.getOrderId())==null){
-    orderList.add(order);
-    updateData();
-}else {
-    orderList.set(orderList.indexOf(order),order);
-    updateData();
-}
+        if (findById(order.getOrderId())==null){
+            orderList.add(order);
+            updateData();
+        }else {
+            orderList.set(orderList.indexOf(order),order);
+            updateData();
+        }
     }
 
     @Override
     public void delete(int id) {
-orderList.remove(findById(id));
-updateData();
+        orderList.remove(findById(id));
+        updateData();
     }
 
     @Override
@@ -60,6 +60,9 @@ updateData();
 
     @Override
     public void updateData() {
-config.writeFile(Config.URL_ORDER,orderList);
+        config.writeFile(Config.URL_ORDER,orderList);
     }
+
+
+
 }

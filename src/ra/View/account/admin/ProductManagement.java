@@ -51,7 +51,7 @@ public class ProductManagement {
                 case 0:
                     return;
                 default:
-                    System.out.println("Lựa chọn không hợp lệ. Vui lòng chọn lại.");
+                    System.out.println(RED+"Lựa chọn không hợp lệ. Vui lòng chọn lại."+RESET);
                     break;
             }
         } while (true);
@@ -77,12 +77,12 @@ public class ProductManagement {
                     case 1:
                         productService.findAll().get(i).setStatus(!productService.findAll().get(i).isStatus());
                         System.out.println(GREEN + "Đổi thành công " + RESET);
-                        productService.updateData();
+                        productService.save(productService.findAll().get(i));
                         break;
                     case 2:
                         break;
                     default:
-                        System.out.println("Không có lựa chọn này");
+                        System.out.println(RED+"Lựa chọn không hợp lệ. Vui lòng chọn lại."+RESET);
                         break;
                 }
             }
@@ -114,10 +114,8 @@ public class ProductManagement {
     }
 
     private void handleEditProduct() {
-//        handleDisplayProducts();
         System.out.println("Nhập id sản phẩm bạn muốn chỉnh sửa thông tin: ");
         int idEdit = Validate.validateInt();
-        List<Product> productsToEdit = new ArrayList<>();
         for (Product pro : productService.findAll()) {
             if (pro.getProductId() == idEdit) {
                 System.out.println(pro);
@@ -135,7 +133,8 @@ public class ProductManagement {
                         case 1:
                             System.out.println("Mời nhập lại tên sản phẩm: ");
                             pro.setProductName(Validate.validateString());
-                            productService.updateData();
+                            System.out.println(GREEN + "Đổi thành công" + RESET);
+                            productService.save(pro);
                             break;
                         case 2:
                             System.out.println("Mời nhập lại danh mục theo số: ");
@@ -144,22 +143,26 @@ public class ProductManagement {
                                 System.out.println((i + 1) + ". " + categoryService.findAll().get(i).getCategoryName());
                             }
                             pro.setCategory(categoryService.findAll().get(n - 1));
-                            productService.updateData();
+                            System.out.println(GREEN + "Đổi thành công" + RESET);
+                            productService.save(pro);
                             break;
                         case 3:
                             System.out.println("Mời nhập lại mô tả: ");
                             pro.setDescription(Validate.validateString());
-                            productService.updateData();
+                            System.out.println(GREEN + "Đổi thành công" + RESET);
+                            productService.save(pro);
                             break;
                         case 4:
                             System.out.println("Mời nhập lại giá: ");
                             pro.setUnitPrice(Validate.validateInt());
-                            productService.updateData();
+                            System.out.println(GREEN + "Đổi thành công" + RESET);
+                            productService.save(pro);
                             break;
                         case 5:
                             System.out.println("Mời nhập lại số lượng trong kho: ");
                             pro.setStock(Validate.validateInt());
-                            productService.updateData();
+                            System.out.println(GREEN + "Đổi thành công" + RESET);
+                            productService.save(pro);
                             break;
                         case 6:
                             System.out.println("Trạng thái hiện tại của sản phẩm là: " + (pro.isStatus() ? "đang bán" : "hết hàng"));
@@ -170,14 +173,12 @@ public class ProductManagement {
                                 case 1:
                                     pro.setStatus(!pro.isStatus());
                                     System.out.println(GREEN + "Đổi thành công" + RESET);
-                                    productService.updateData();
-//                                    if (pro.getCategory().isStatus()){
-//                                    }else {
-//                                        System.out.println(RED+"Danh mục của sản phẩm này hện đang ngừng hoạt động, hãy đổi trạng thái danh mục trước"+RESET);
-//                                        return;
-//                                    }
+                                    productService.save(pro);
                                     break;
                                 case 2:
+                                    break;
+                                default:
+                                    System.out.println(RED+"Lựa chọn không hợp lệ. Vui lòng chọn lại."+RESET);
                                     break;
                             }
                             break;
@@ -185,12 +186,10 @@ public class ProductManagement {
                             isDone = true;
                             return;
                         default:
-                            System.out.println("Không có lựa chọn này!");
+                            System.out.println(RED+"Lựa chọn không hợp lệ. Vui lòng chọn lại."+RESET);
                             break;
                     }
                 }
-//                updateCategory(pro.getCategory());
-                productService.save(pro);
             }
         }
         System.out.println(GREEN + "Thay đổi thành công!" + RESET);
@@ -249,25 +248,10 @@ public class ProductManagement {
         System.out.println("+--------------+--------------------------+-------------------------------+---------------------+-----------+---------------------+-----------------------+");
         productService.findAll().sort((p1, p2) -> p2.getProductId() - p1.getProductId());
         for (Product pro : productService.findAll()) {
-//            if (!pro.getCategory().isStatus()) {
-//                pro.setStatus(!pro.isStatus());
-//            }
                 System.out.println(pro);
         }
         System.out.println("+--------------+--------------------------+-------------------------------+---------------------+-----------+---------------------+-----------------------+");
     }
 
-//    private void updateCategory(Category category) {
-//        List<Product> productsToUpdate = new ArrayList<>();
-//
-//        for (Product pro : productService.findAll()) {
-//            if (pro.getCategory().getCategoryId() == category.getCategoryId()) {
-//                pro.setCategory(category);
-//                productsToUpdate.add(pro);
-//            }
-//        }
-//        for (Product product : productsToUpdate) {
-//            productService.save(product);
-//        }
-//    }
+
 }

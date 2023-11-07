@@ -14,6 +14,7 @@ import ra.service.product.ProductServiceIMPL;
 
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 
 import static ra.config.Color.*;
 
@@ -41,8 +42,10 @@ public class UserOrder {
                         Product product = productService.findById(idPro);
                         if (product.getProductId() == idPro && product.getStock() >= cart.getProducts().get(idPro)) {
                             product.setStock(product.getStock() - cart.getProducts().get(idPro));
+                            productService.save(product);
                         } else if (product.getStock() - cart.getProducts().get(idPro) == 0) {
                             product.setStatus(!product.isStatus());
+                            productService.save(product);
                             System.out.println(RED+"Sản phẩm đã hết hàng"+RESET);
                         } else {
                             System.out.println(RED+"Số lượng trong kho không đủ!"+RESET);
@@ -64,14 +67,14 @@ public class UserOrder {
 //                    newOrder.setDeliverAt(LocalDateTime.now().plusMinutes(3));
                     orderService.save(newOrder);
                     System.out.println(GREEN + "Đặt hàng thành công" + RESET);
-                    cart.getProducts().clear();
+                    cart.setProducts(new HashMap<>());
                     cartService.save(cart);
                 }
                 break;
             case 2:
                 break;
             default:
-                System.out.println("Không có lựa chọn này! ");
+                System.out.println(RED+"Lựa chọn không hợp lệ. Vui lòng chọn lại."+RESET);
                 break;
         }
 

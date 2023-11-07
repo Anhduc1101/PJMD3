@@ -35,7 +35,7 @@ public class MyProfile {
                 case 0:
                     return;
                 default:
-                    System.out.println("Lựa chọn không hợp lệ. Vui lòng chọn lại.");
+                    System.out.println(RED+"Lựa chọn không hợp lệ. Vui lòng chọn lại."+RESET);
                     break;
             }
         } while (true);
@@ -119,7 +119,7 @@ public class MyProfile {
             case 0:
                 return;
             default:
-                System.out.println("Không có lựa chọn này. Hãy chọn lại: ");
+                System.out.println(RED+"Lựa chọn không hợp lệ. Vui lòng chọn lại."+RESET);
                 break;
         }
         userService.save(userLogin);
