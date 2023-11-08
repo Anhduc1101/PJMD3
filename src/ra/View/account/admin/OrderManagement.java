@@ -84,7 +84,7 @@ public class OrderManagement {
                     System.out.println("+--------+--------------+-------------------+--------------------+---------------------+--------------+-------------+----------+--------------------------+-------------------+");
                     for (Order order:orderService.findAll()) {
                         for (Integer idPro:order.getOrderDetails().keySet()) {
-                            if (order.getOrderStatus()==OrderStatus.SUCCESS){
+                            if (order.getOrderStatus()==OrderStatus.CONFIRM){
                                 System.out.printf("    %-5d|      %-5d   |  %-10s       |     %-10s     |  %-10s         |    %-10s|      %-5s  |     %-5d| %-20s  |     %-14s\n",
                                         order.getOrderId(), order.getUserId(), order.getName(),order.getPhoneNumber(),order.getAddress(),order.getTotal(),idPro,order.getOrderDetails().get(idPro),order.getOrderAt(),order.getOrderStatus().getVietnameseName());
                             }

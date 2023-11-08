@@ -52,9 +52,7 @@ public class UserManagement {
                             System.out.println("+-----------------+-------------------+-------------------+--------------------+-------------------------+--------------------+---------------+-------------------+");
                             System.out.println(users);
                             System.out.println("+-----------------+-------------------+-------------------+--------------------+-------------------------+--------------------+---------------+-------------------+");
-
                             isFound = true;
-//                            break;
                         }
                     }
                     System.out.println(GREEN+"Tìm kiếm thành công! "+RESET);
@@ -77,7 +75,7 @@ public class UserManagement {
                                 case 1:
                                     System.out.println("Có");
                                     users.setStatus(!users.isStatus());
-                                    System.out.println("Tài khoản này đã: " + (users.isStatus() ? "được mở khóa" : "bị khóa"));
+                                    System.out.println("Tài khoản này đã: " + (users.isStatus() ? GREEN+"được mở khóa"+RESET : RED+"bị khóa"+RESET));
                                     findAdmin=false;
                                     userService.updateData();
                                     break;

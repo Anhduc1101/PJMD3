@@ -115,10 +115,7 @@ public class UserHomePage {
             System.out.println(RED+"Không có danh mục này!"+RESET);
             return;
         }
-        System.out.println(cat);
         boolean isFound = false;
-
-
         for (int i = 0; i < productService.findAll().size(); i++) {
             if (productService.findAll().get(i).getCategory().getCategoryId()==cateId) {
                 if (productService.findAll().get(i).isStatus()&&productService.findAll().get(i).getCategory().isStatus()){
@@ -150,7 +147,7 @@ public class UserHomePage {
                 }
             }
         }
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 10; i++) {
             if (productService.findAll().get(i) != null && productService.findAll().get(i).isStatus()) {
                 System.out.println(productService.findAll().get(i));
             }

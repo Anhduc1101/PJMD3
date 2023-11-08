@@ -61,11 +61,11 @@ public class ProductManagement {
         handleDisplayProducts();
         System.out.println("Nhập mã sản phẩm bạn muốn ẩn: ");
         int hiddenNum = Validate.validateInt();
-        System.out.println("+--------------+--------------------------+-------------------------------+---------------------+-----------+---------------------+-----------------------+");
-        System.out.println("                                                                  \033[1;94mDANH SÁCH SẢN PHẨM" + RESET);
-        System.out.println("+--------------+--------------------------+-------------------------------+---------------------+-----------+---------------------+-----------------------+");
-        System.out.println("| Mã sản phẩm  |       Tên sản phẩm       |             Mô tả             |       Đơn giá       |   SL Kho  |      Danh mục       |       Trạng thái      |");
-        System.out.println("+--------------+--------------------------+-------------------------------+---------------------+-----------+---------------------+-----------------------+");
+//        System.out.println("+--------------+--------------------------+-------------------------------+---------------------+-----------+---------------------+-----------------------+");
+//        System.out.println("                                                                  \033[1;94mDANH SÁCH SẢN PHẨM" + RESET);
+//        System.out.println("+--------------+--------------------------+-------------------------------+---------------------+-----------+---------------------+-----------------------+");
+//        System.out.println("| Mã sản phẩm  |       Tên sản phẩm       |             Mô tả             |       Đơn giá       |   SL Kho  |      Danh mục       |       Trạng thái      |");
+//        System.out.println("+--------------+--------------------------+-------------------------------+---------------------+-----------+---------------------+-----------------------+");
         for (int i = 0; i < productService.findAll().size(); i++) {
             if (productService.findAll().get(i).getProductId() == hiddenNum) {
                 System.out.println("Bạn đã chọn sản phẩm này: " + productService.findAll().get(i));

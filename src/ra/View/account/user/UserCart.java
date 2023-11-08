@@ -229,13 +229,19 @@ public class UserCart {
     }
 
     private void handleDisplayProductInfo() {
-
         System.out.println("Danh sách sản phẩm: ");
+        System.out.println("+--------------+--------------------------+-------------------------------+---------------------+-----------+---------------------+-----------------------+");
+        System.out.println("                                                                  \033[1;94mDANH SÁCH SẢN PHẨM" + RESET);
+        System.out.println("+--------------+--------------------------+-------------------------------+---------------------+-----------+---------------------+-----------------------+");
+        System.out.println("| Mã sản phẩm  |       Tên sản phẩm       |             Mô tả             |       Đơn giá       |   SL Kho  |      Danh mục       |       Trạng thái      |");
+        System.out.println("+--------------+--------------------------+-------------------------------+---------------------+-----------+---------------------+-----------------------+");
         for (Product pro : productService.findAll()) {
             if (pro.isStatus() && pro.getCategory().isStatus()) {
                 System.out.println(pro);
             }
         }
+        System.out.println("+--------------+--------------------------+-------------------------------+---------------------+-----------+---------------------+-----------------------+");
+
     }
 
     public double totalBill() {

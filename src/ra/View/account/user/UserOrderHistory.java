@@ -55,11 +55,9 @@ public class UserOrderHistory {
         System.out.println("Nhập mã đơn bạn muốn hủy: ");
         int cancelId = Validate.validateInt();
         boolean isExist = false;
-//        List<Order> ordersToDelete = new ArrayList<>(); // Danh sách tạm thời để lưu trữ các Order cần xóa
         for (Order order : orderService.findAll()) {
             if (order.getOrderId() == cancelId) {
                 handleShowHistory();
-//                System.out.println(order);
                 isExist = true;
                 System.out.println("Bạn có chắc chắn muốn hủy đơn không? ");
                 System.out.println("1. Có");
@@ -71,9 +69,10 @@ public class UserOrderHistory {
                             for (int idPro: order.getOrderDetails().keySet()){
                                 Product product = productService.findById(idPro);
                                 if (product.getProductId()==idPro){
+                                    order.setOrderStatus(OrderStatus.CANCEL);
                                     product.setStock(product.getStock() + order.getOrderDetails().get(idPro));
-                                    orderService.save(order);
                                     productService.save(product);
+                                    orderService.save(order);
                                 }
                             }
                             System.out.println(GREEN + "Hủy đơn thành công" + RESET);
