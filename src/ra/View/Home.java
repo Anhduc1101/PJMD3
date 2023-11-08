@@ -1,6 +1,7 @@
 package ra.View;
 
 import ra.View.account.admin.MenuAdmin;
+import ra.View.account.profile.MyProfile;
 import ra.View.account.user.MenuUser;
 import ra.config.Config;
 import ra.config.Validate;
@@ -110,7 +111,7 @@ public class Home {
     public void checkRoleLogin(Users users) {
         // đúng tên tài khoản
         if (users.getRole().equals(RoleName.ADMIN)) {
-//                userLogin = users;
+                MyProfile.userLogin = users;
             new Config<Users>().writeFile(Config.URL_USER_LOGIN, users);// ghi đối tượng Users đang đăng nhập vào file
             // chuyển đến trang quản lý admin
             System.out.println(GREEN+"Đăng nhập thành công! "+RESET);
@@ -118,7 +119,7 @@ public class Home {
         } else {
             if (users.isStatus()) {
                 // chuyển đến trang user
-//                    userLogin = users;
+                MyProfile.userLogin = users;
                 new Config<Users>().writeFile(Config.URL_USER_LOGIN, users);
                 System.out.println(GREEN+"Đăng nhập thành công! "+RESET);
                 new MenuUser().menuUser();
