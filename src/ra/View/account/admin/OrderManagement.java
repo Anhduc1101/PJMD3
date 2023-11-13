@@ -151,11 +151,10 @@ public class OrderManagement {
             System.out.println(RED + "Không có đơn hàng này!" + RESET);
             return;
         } else if (orderById.getOrderStatus() != OrderStatus.WAITING) {
-            System.out.println("Đơn hàng đã " + orderById.getOrderStatus().getVietnameseName());
+            System.out.println("Đơn hàng đã " + orderById.getOrderStatus().getVietnameseName()+", không được thay đổi !");
             return;
         } else {
             System.out.println("Mã bạn chọn là: " + orderById.getOrderId());
-
             System.out.println("Bạn có muốn thay đổi trạng thái đơn hàng này không? ");
             System.out.println("1. Xác nhận đơn hàng");
             System.out.println("2. Hủy đơn hàng");
@@ -188,6 +187,7 @@ public class OrderManagement {
                     break;
             }
         }
+        System.out.println();
     }
     public void handleDisplay(){
         System.out.println("+--------+--------------+-------------------+--------------------+---------------------+--------------+-------------+----------+--------------------------+-------------------+");

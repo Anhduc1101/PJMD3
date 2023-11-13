@@ -19,8 +19,9 @@ public class Home {
     public void menu() {
         do {
             userService.findAll().sort((u1,u2)->u2.getId()- u1.getId());
-            for (Users users : userService.findAll()) {
+            for (Users users : userService.findAll()) {if (users.getRole()==RoleName.ADMIN){
                 System.out.println(users);
+            }
             }
             System.out.println("\033[1;94m╔═══════════════ TRANG CHỦ ═══════════════╗");
             System.out.println("\033[1;94m║                                         ║");
@@ -42,7 +43,7 @@ public class Home {
                     System.exit(0);
                     break;
                 default:
-                    System.out.println("Lựa chọn không hợp lệ. Vui lòng chọn lại.");
+                    System.out.println(RED+"Lựa chọn không hợp lệ. Vui lòng chọn lại."+RESET);
                     break;
             }
         } while (true);

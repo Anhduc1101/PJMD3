@@ -132,7 +132,7 @@ public class UserHomePage {
     }
 
     private void handleDisplayTopTenProductByUnitPriceCheapest() {
-        System.out.println("Danh sách 10 sản phẩm có giá rẻ nhất: ");
+        System.out.println("Danh sách sản phẩm có giá rẻ nhất: ");
         System.out.println("+--------------+--------------------------+-------------------------------+---------------------+-----------+---------------------+-----------------------+");
         System.out.println("                                                                  \033[1;94mDANH SÁCH SẢN PHẨM" + RESET);
         System.out.println("+--------------+--------------------------+-------------------------------+---------------------+-----------+---------------------+-----------------------+");

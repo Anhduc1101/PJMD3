@@ -1,5 +1,8 @@
 package ra.config;
 
+import static ra.config.Color.RED;
+import static ra.config.Color.RESET;
+
 public class Validate {
     public static int validateInt() {
         int n;
@@ -9,10 +12,10 @@ public class Validate {
                 if (n >= 0) { // Kiểm tra số không âm
                     break;
                 } else {
-                    System.out.println("Số không được âm. Mời nhập lại: ");
+                    System.out.println(RED+"Số không được âm. Mời nhập lại: "+RESET);
                 }
             } catch (NumberFormatException e) {
-                System.out.println("Sai định dạng. Mời nhập lại: ");
+                System.out.println(RED+"Sai định dạng. Mời nhập lại: "+RESET);
             }
         }
         return n;
@@ -25,7 +28,7 @@ public class Validate {
             if (email.matches("[a-zA-Z0-9]+(\\.[a-zA-Z0-9]+)*@[a-z]+(\\.[a-z]+){1,2}")) {
                 break;
             } else {
-                System.out.println("Email không đúng định dạng mời nhập lại: ");
+                System.out.println(RED+"Email không đúng định dạng mời nhập lại: "+RESET);
             }
         }
         return email;
@@ -36,7 +39,7 @@ public class Validate {
         while (true) {
             s = Config.scanner().nextLine();
             if (s.trim().isEmpty()) {
-                System.out.println("Không được để trống, mời nhập lại: ");
+                System.out.println(RED+"Không được để trống, mời nhập lại: "+RESET);
             } else {
                 break;
             }
@@ -49,11 +52,11 @@ public class Validate {
         while (true) {
             phoneNumber = Config.scanner().nextLine();
             if (phoneNumber.isEmpty()) {
-                System.out.println("Không được để trống, mời nhập lại: ");
+                System.out.println(RED+"Không được để trống, mời nhập lại: "+RESET);
             } else if (phoneNumber.matches("(84|0[3|5|7|8|9])+([0-9]{8})\\b")) {
                 break;
             } else {
-                System.out.println("Không đúng định dạng số điện thoại, mời nhập lại:  ");
+                System.out.println(RED+"Không đúng định dạng số điện thoại, mời nhập lại:  "+RESET);
             }
         }
         return phoneNumber;
